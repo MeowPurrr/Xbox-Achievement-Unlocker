@@ -39,7 +39,7 @@ public class PersonResponse
     public object? PresenceDevices { get; set; }
 
     public bool IsBroadcasting { get; set; }
-    public bool IsCloaked { get; set; }
+    public bool? IsCloaked { get; set; }
     public bool IsQuarantined { get; set; }
     public bool IsXbox360Gamerpic { get; set; }
     public DateTime? LastSeenDateTimeUtc { get; set; }
