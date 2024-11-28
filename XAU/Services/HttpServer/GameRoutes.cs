@@ -10,7 +10,11 @@ public static class GameRoutes
     {
         { "/api/games/me", async context => await GamesMeRequest(context, getXboxRestAPI, getXUIDOnly) },
         { "/api/games/xuid/", async context => await GamesXuidRequest(context, getXboxRestAPI) },
-        { "/api/games/gt/", async context => await GamesGamertagRequest(context, getXboxRestAPI) }
+        { "/api/games/gt/", async context => await GamesGamertagRequest(context, getXboxRestAPI) },
+        { "/api/games/search/titleid/", async context => await GameTitleIDSearchRequest(context, getXboxRestAPI, getXUIDOnly) },
+        { "/api/games/search/productid/", async context => await GameProductIDSearchRequest(context, getXboxRestAPI) }
+
+
     };
     }
 
@@ -118,6 +122,84 @@ public static class GameRoutes
             }
 
             await SendJsonResponse(response, gamesList);
+        }
+        catch (Exception ex)
+        {
+            response.StatusCode = 500;
+            await SendJsonResponse(response, new { error = ex.Message, innerError = ex.InnerException?.Message });
+        }
+    }
+
+    private static async Task GameTitleIDSearchRequest(HttpListenerContext context, Func<XboxRestAPI> getXboxRestAPI, Func<string> getXUIDOnly)
+    {
+        var request = context.Request;
+        var response = context.Response;
+
+        try
+        {
+            if (request.Url.Segments.Length < 4)
+            {
+                response.StatusCode = 400;
+                await SendJsonResponse(response, new { error = "No Title ID provided in URL" });
+                return;
+            }
+
+            string titleId = request.Url.Segments.Last().TrimEnd('/');
+
+            string xuid = getXUIDOnly?.Invoke();
+            if (string.IsNullOrWhiteSpace(xuid))
+            {
+                response.StatusCode = 400;
+                await SendJsonResponse(response, new { error = "No XUID found" });
+                return;
+            }
+
+            var xboxRestAPI = getXboxRestAPI();
+            var gameTitle = await xboxRestAPI.GetGameTitleAsync(xuid, titleId);
+
+            if (gameTitle == null)
+            {
+                response.StatusCode = 404;
+                await SendJsonResponse(response, new { error = "No Games found" });
+                return;
+            }
+
+            await SendJsonResponse(response, gameTitle);
+        }
+        catch (Exception ex)
+        {
+            response.StatusCode = 500;
+            await SendJsonResponse(response, new { error = ex.Message, innerError = ex.InnerException?.Message });
+        }
+    }
+
+    private static async Task GameProductIDSearchRequest(HttpListenerContext context, Func<XboxRestAPI> getXboxRestAPI)
+    {
+        var request = context.Request;
+        var response = context.Response;
+
+        try
+        {
+            if (request.Url.Segments.Length < 4)
+            {
+                response.StatusCode = 400;
+                await SendJsonResponse(response, new { error = "No Product ID provided in URL" });
+                return;
+            }
+
+            string productId = request.Url.Segments.Last().TrimEnd('/');
+
+            var xboxRestAPI = getXboxRestAPI();
+            var gamePassProducts = await xboxRestAPI.GetTitleIdsFromGamePass(productId);
+
+            if (gamePassProducts == null)
+            {
+                response.StatusCode = 404;
+                await SendJsonResponse(response, new { error = "No Games found" });
+                return;
+            }
+
+            await SendJsonResponse(response, gamePassProducts);
         }
         catch (Exception ex)
         {
