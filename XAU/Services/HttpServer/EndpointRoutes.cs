@@ -182,7 +182,7 @@ public static class EndpointRoutes
                 <h2 class=""text-xl font-semibold mb-4 text-gray-700"">/api/games/search/titleid/<span class=""placeholder"">{titleid}</span></h2>
                 <p class=""text-gray-600 mb-4"">Retrieve game details for a specific Title ID.</p>
                 <div class=""flex items-center space-x-2"">
-                    <input type=""text"" id=""titleIdInput"" placeholder=""Enter Title ID"" class=""flex-grow px-3 py-2 border rounded"">
+                    <input type=""text"" id=""searchTitleIdInput"" placeholder=""Enter Title ID"" class=""flex-grow px-3 py-2 border rounded"">
                     <button onclick=""openEndpoint('/api/games/search/titleid/', 'searchTitleIdInput')"" class=""bg-gray-500 text-white px-4 py-2 rounded hover:bg-gray-600"">GO</button>
                 </div>
             </div>
@@ -192,7 +192,7 @@ public static class EndpointRoutes
                 <h2 class=""text-xl font-semibold mb-4 text-gray-700"">/api/games/search/productid/<span class=""placeholder"">{productid}</span></h2>
                 <p class=""text-gray-600 mb-4"">Retrieve Title ID from the specified Product ID.</p>
                 <div class=""flex items-center space-x-2"">
-                    <input type=""text"" id=""productIdInput"" placeholder=""Enter Product ID"" class=""flex-grow px-3 py-2 border rounded"">
+                    <input type=""text"" id=""searchProductIdInput"" placeholder=""Enter Product ID"" class=""flex-grow px-3 py-2 border rounded"">
                     <button onclick=""openEndpoint('/api/games/search/productid/', 'searchProductIdInput')"" class=""bg-gray-500 text-white px-4 py-2 rounded hover:bg-gray-600"">GO</button>
            </div>
 
