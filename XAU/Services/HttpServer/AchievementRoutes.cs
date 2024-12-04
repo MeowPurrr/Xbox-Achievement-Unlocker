@@ -46,7 +46,16 @@ public static class AchievementRoutes
 
             var achievements = await xboxRestAPI.GetAchievementsForTitleAsync(xuid, titleId);
 
-            // to do: add x360 achievement check if title achievements returns empty.
+            if (achievements == null || achievements.achievements == null || !achievements.achievements.Any())
+            {
+                var xbox360Achievements = await xboxRestAPI.GetAchievementsFor360TitleAsync(xuid, titleId);
+
+                if (xbox360Achievements != null)
+                {
+                    await SendJsonResponse(response, xbox360Achievements);
+                    return;
+                }
+            }
 
             if (achievements == null)
             {
