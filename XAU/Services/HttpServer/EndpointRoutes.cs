@@ -190,7 +190,7 @@ public static class EndpointRoutes
             <div class=""bg-white rounded-xl shadow-lg p-6 relative"">
                 <span class=""absolute top-4 right-4 bg-blue-500 text-white px-2 py-1 rounded text-sm"">GET</span>
                 <h2 class=""text-xl font-semibold mb-4 text-gray-700"">/api/games/search/productid/<span class=""placeholder"">{productid}</span></h2>
-                <p class=""text-gray-600 mb-4"">Retrieve Title ID from the specified Product ID.</p>
+                <p class=""text-gray-600 mb-4"">Retrieve game details for a specific product ID.</p>
                 <div class=""flex items-center space-x-2"">
                     <input type=""text"" id=""searchProductIdInput"" placeholder=""Enter Product ID"" class=""flex-grow px-3 py-2 border rounded"">
                     <button onclick=""openEndpoint('/api/games/search/productid/', 'searchProductIdInput')"" class=""bg-gray-500 text-white px-4 py-2 rounded hover:bg-gray-600"">GO</button>
